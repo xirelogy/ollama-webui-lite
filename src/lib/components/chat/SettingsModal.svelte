@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Modal from "../common/Modal.svelte";
 
-	import { WEB_UI_VERSION, OLLAMA_API_BASE_URL } from "$lib/constants";
+	import { WEB_UI_VERSION } from "$lib/constants";
+	import { getEnvConstOllamaApiBaseUrl } from "$lib/EnvConstants";
 	import toast from "svelte-french-toast";
 	import { onMount } from "svelte";
 	import { info, models, settings } from "$lib/stores";
@@ -20,7 +21,7 @@
 	let selectedTab = "general";
 
 	// General
-	let API_BASE_URL = OLLAMA_API_BASE_URL;
+	let API_BASE_URL = getEnvConstOllamaApiBaseUrl();
 	let theme = "dark";
 	let notificationEnabled = false;
 
@@ -50,7 +51,7 @@
 
 	const checkOllamaConnection = async () => {
 		if (API_BASE_URL === "") {
-			API_BASE_URL = OLLAMA_API_BASE_URL;
+			API_BASE_URL = getEnvConstOllamaApiBaseUrl();
 		}
 		const _models = await getModels(API_BASE_URL, "ollama");
 
@@ -208,7 +209,7 @@
 
 	const getModels = async (url = "", type = "all") => {
 		let models = [];
-		const res = await fetch(`${url ? url : $settings?.API_BASE_URL ?? OLLAMA_API_BASE_URL}/tags`, {
+		const res = await fetch(`${url ? url : $settings?.API_BASE_URL ?? getEnvConstOllamaApiBaseUrl()}/tags`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",
@@ -239,7 +240,7 @@
 		theme = localStorage.theme ?? "dark";
 		notificationEnabled = settings.notificationEnabled ?? false;
 
-		API_BASE_URL = settings.API_BASE_URL ?? OLLAMA_API_BASE_URL;
+		API_BASE_URL = settings.API_BASE_URL ?? getEnvConstOllamaApiBaseUrl();
 
 		requestFormat = settings.requestFormat ?? "";
 
@@ -480,7 +481,7 @@
 								class=" px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-gray-100 transition rounded"
 								on:click={() => {
 									saveSettings({
-										API_BASE_URL: API_BASE_URL === "" ? OLLAMA_API_BASE_URL : API_BASE_URL
+										API_BASE_URL: API_BASE_URL === "" ? getEnvConstOllamaApiBaseUrl() : API_BASE_URL
 									});
 									show = false;
 								}}

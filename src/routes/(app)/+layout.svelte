@@ -9,14 +9,14 @@
 	import SettingsModal from "$lib/components/chat/SettingsModal.svelte";
 	import Sidebar from "$lib/components/layout/Sidebar.svelte";
 	import toast from "svelte-french-toast";
-	import { OLLAMA_API_BASE_URL } from "$lib/constants";
+	import { getEnvConstOllamaApiBaseUrl } from "$lib/EnvConstants";
 
 	let requiredOllamaVersion = "0.1.16";
 	let loaded = false;
 
 	const getModels = async () => {
 		let models = [];
-		const res = await fetch(`${$settings?.API_BASE_URL ?? OLLAMA_API_BASE_URL}/tags`, {
+		const res = await fetch(`${$settings?.API_BASE_URL ?? getEnvConstOllamaApiBaseUrl()}/tags`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",
@@ -116,7 +116,7 @@
 	};
 
 	const getOllamaVersion = async () => {
-		const res = await fetch(`${$settings?.API_BASE_URL ?? OLLAMA_API_BASE_URL}/version`, {
+		const res = await fetch(`${$settings?.API_BASE_URL ?? getEnvConstOllamaApiBaseUrl()}/version`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",

@@ -2,7 +2,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import toast from 'svelte-french-toast';
 
-	import { OLLAMA_API_BASE_URL } from '$lib/constants';
+	import { getEnvConstOllamaApiBaseUrl } from '$lib/EnvConstants';
 	import { tick } from 'svelte';
 	import { convertMessagesToHistory, splitStream } from '$lib/utils';
 	import { goto } from '$app/navigation';
@@ -169,7 +169,7 @@
 		await tick();
 		window.scrollTo({ top: document.body.scrollHeight });
 
-		const res = await fetch(`${$settings?.API_BASE_URL ?? OLLAMA_API_BASE_URL}/chat`, {
+		const res = await fetch(`${$settings?.API_BASE_URL ?? getEnvConstOllamaApiBaseUrl()}/chat`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'text/event-stream',
@@ -416,7 +416,7 @@
 		if ($settings.titleAutoGenerate ?? true) {
 			console.log('generateChatTitle');
 
-			const res = await fetch(`${$settings?.API_BASE_URL ?? OLLAMA_API_BASE_URL}/generate`, {
+			const res = await fetch(`${$settings?.API_BASE_URL ?? getEnvConstOllamaApiBaseUrl()}/generate`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'text/event-stream',
